@@ -10,6 +10,7 @@ import golden.services.model.usuarios.UsuarioDLO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -32,5 +33,16 @@ public class UsuarioController {
 	public Integer getCount() {
 		return usuarioDLO.list().size();
 	}
+
+	@RequestMapping("/criar")
+	public Usuario criarUsuario(@RequestParam String email, @RequestParam String password, @RequestParam String nome, @RequestParam String endereco, @RequestParam String telefone, @RequestParam String sexo, @RequestParam String sobre) {
+		Usuario u = usuarioDLO.createUsuario(email, password, nome, endereco, telefone, sexo, sobre);
+		return u;
+	}
 	
+	@RequestMapping("/ativar")
+	public Usuario ativarUsuario(@RequestParam String id, @RequestParam String hash) {
+		Usuario u = usuarioDLO.activateUsuario(id, hash);
+		return u;
+	}
 }
