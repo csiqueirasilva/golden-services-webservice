@@ -12,5 +12,5 @@ package golden.services.model.trabalhos;
 public enum EstadoTrabalho {
     NAO_INICIADO,
     EFETUANDO,
-    TERMINADO;
+    ENCERRADO;
 }
