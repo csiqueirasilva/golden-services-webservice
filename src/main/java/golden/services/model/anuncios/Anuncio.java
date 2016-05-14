@@ -18,7 +18,7 @@ import javax.persistence.ManyToOne;
 public class Anuncio implements Serializable {
 
     @ManyToOne
-    private Usuario usuario;
+    private Usuario prestador;
     
     @Column
     private String areaDeAtuacao;
@@ -87,12 +87,12 @@ public class Anuncio implements Serializable {
         this.preco = preco;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Usuario getPrestador() {
+        return prestador;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setPrestador(Usuario usuario) {
+        this.prestador = usuario;
     }
     
 }
