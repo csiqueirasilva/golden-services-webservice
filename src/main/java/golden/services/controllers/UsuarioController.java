@@ -5,6 +5,7 @@
  */
 package golden.services.controllers;
 
+import golden.services.model.usuarios.ListaUsuarios;
 import golden.services.model.usuarios.Usuario;
 import golden.services.model.usuarios.UsuarioDLO;
 import java.util.List;
@@ -21,28 +22,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-	@Autowired
-	private UsuarioDLO usuarioDLO;
+    @Autowired
+    private UsuarioDLO usuarioDLO;
 
-	@RequestMapping("/list")
-	public List<Usuario> getList() {
-		return usuarioDLO.list();
-	}
+    @RequestMapping("/list")
+    public ListaUsuarios getList() {
+        return usuarioDLO.list();
+    }
 
-	@RequestMapping("/count")
-	public Integer getCount() {
-		return usuarioDLO.list().size();
-	}
+    @RequestMapping("/count")
+    public Integer getCount() {
+        return usuarioDLO.list().getUsuarios().size();
+    }
 
-	@RequestMapping("/criar")
-	public Usuario criarUsuario(@RequestParam String email, @RequestParam String password, @RequestParam String nome, @RequestParam String endereco, @RequestParam String telefone, @RequestParam String sexo, @RequestParam String sobre) {
-		Usuario u = usuarioDLO.createUsuario(email, password, nome, endereco, telefone, sexo, sobre);
-		return u;
-	}
-	
-	@RequestMapping("/ativar")
-	public Usuario ativarUsuario(@RequestParam String id, @RequestParam String hash) {
-		Usuario u = usuarioDLO.activateUsuario(id, hash);
-		return u;
-	}
+    @RequestMapping("/criar")
+    public Usuario criarUsuario(@RequestParam String email, @RequestParam String password, @RequestParam String nome, @RequestParam String endereco, @RequestParam String telefone, @RequestParam String sexo, @RequestParam String sobre) {
+        Usuario u = usuarioDLO.createUsuario(email, password, nome, endereco, telefone, sexo, sobre);
+        return u;
+    }
+
+    @RequestMapping("/ativar")
+    public Usuario ativarUsuario(@RequestParam String id, @RequestParam String hash) {
+        Usuario u = usuarioDLO.activateUsuario(id, hash);
+        return u;
+    }
 }

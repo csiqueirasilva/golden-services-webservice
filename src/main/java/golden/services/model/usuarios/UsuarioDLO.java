@@ -34,8 +34,11 @@ public class UsuarioDLO {
 		return EMAIL_PATTERN.matcher(email).matches();
 	}
 
-	public List<Usuario> list() {
-		return dao.findAll();
+	public ListaUsuarios list() {
+            List<Usuario> findAll = dao.findAll();
+            ListaUsuarios ret = new ListaUsuarios();
+            ret.setUsuarios(findAll);
+            return ret;
 	}
 
 	public Usuario findByEmailAndPassword(String email, String password) {
