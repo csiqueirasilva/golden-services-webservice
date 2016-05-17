@@ -1,4 +1,4 @@
-package golden.services.model.avaliacoes;
+package golden.services.model.trabalhos.avaliacoes;
 
 import java.io.Serializable;
 import javax.persistence.Column;

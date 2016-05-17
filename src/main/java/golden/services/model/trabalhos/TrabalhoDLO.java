@@ -7,7 +7,7 @@ package golden.services.model.trabalhos;
 
 import golden.services.model.anuncios.Anuncio;
 import golden.services.model.anuncios.AnuncioDLO;
-import golden.services.model.avaliacoes.Avaliacao;
+import golden.services.model.trabalhos.avaliacoes.Avaliacao;
 import golden.services.model.usuarios.Usuario;
 import golden.services.model.usuarios.UsuarioDLO;
 import java.util.Date;

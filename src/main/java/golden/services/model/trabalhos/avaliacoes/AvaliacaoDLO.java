@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package golden.services.model.avaliacoes;
+package golden.services.model.trabalhos.avaliacoes;
 
 import golden.services.model.trabalhos.Trabalho;
 import golden.services.model.trabalhos.TrabalhoDLO;
