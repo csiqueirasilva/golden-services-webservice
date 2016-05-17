@@ -4,15 +4,9 @@ import golden.services.http.ConnectorWebService;
 import golden.services.http.HttpService;
 import golden.services.model.usuarios.ListaUsuarios;
 import golden.services.model.usuarios.Usuario;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import junit.framework.Assert;
-import org.apache.http.message.BasicNameValuePair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,29 +21,58 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @Configurable
 public class UsuarioTest {
 
-    @Autowired
-    private HttpService http;
+	private final String passwordUsuario = "a";
 
+	private Usuario criarUsuario() {
+		int rng = (int) (Math.random() * 1000);
+		String emailUsuario = rng + System.currentTimeMillis() + "a@a.com";
+		return ConnectorWebService.criarUsuario(emailUsuario, passwordUsuario, "", "", "", "", "");
+	}
+	
     @Test
     public void criar() {
 
-        String emailUsuario = System.currentTimeMillis() + "a@a.com";
-        String passwordUsuario = "a";
+		Object ret = ConnectorWebService.deslogarUsuario();
+        System.out.println(ret);
+		
+        Usuario usuarioCriado1 = criarUsuario();
 
-        Usuario usuarioCriado = ConnectorWebService.criarUsuario(emailUsuario, passwordUsuario, "", "", "", "", "");
+        //String hashAtivo = usuarioCriado.getHashAtivo();
+        //String idUsuario = usuarioCriado.getId().toString();
 
-        String hashAtivo = usuarioCriado.getHashAtivo();
-        String idUsuario = usuarioCriado.getId().toString();
+        //Usuario usuarioConfirmado = ConnectorWebService.confirmarUsuario(idUsuario, hashAtivo);
 
-        Usuario usuarioConfirmado = ConnectorWebService.confirmarUsuario(idUsuario, hashAtivo);
-
-        Usuario usuarioLogado = ConnectorWebService.logarUsuario(usuarioConfirmado.getEmail(), passwordUsuario);
-
+        Usuario usuarioLogado1 = ConnectorWebService.logarUsuario(usuarioCriado1.getEmail(), passwordUsuario);
+		
         ListaUsuarios listaUsuarios = ConnectorWebService.listarUsuarios();
         System.out.println(listaUsuarios);
 
-        Object ret = ConnectorWebService.deslogarUsuario();
+        ret = ConnectorWebService.deslogarUsuario();
         System.out.println(ret);
     }
 
+	@Test
+	public void logarSeguidamente() throws Exception {
+		
+		Usuario usuarioPreviamenteLogado = ConnectorWebService.getUsuarioLogado();
+		
+		System.out.println(usuarioPreviamenteLogado);
+		
+		Assert.assertNull(usuarioPreviamenteLogado);
+		
+		Usuario u1 = criarUsuario();
+		Usuario u2 = criarUsuario();
+		ConnectorWebService.logarUsuario(u1.getEmail(), passwordUsuario);
+		
+		System.out.println("USUARIO LOGADO : " + u1.getEmail());
+		
+		ConnectorWebService.logarUsuario(u2.getEmail(), passwordUsuario);
+		
+		System.out.println("USUARIO LOGADO : " + u2.getEmail());
+		
+		String email = ConnectorWebService.getUsuarioLogado().getEmail();
+		
+		System.out.println("USUARIO LOGADO : " + email);
+	}
+	
 }

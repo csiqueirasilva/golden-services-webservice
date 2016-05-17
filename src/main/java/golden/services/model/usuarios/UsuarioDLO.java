@@ -1,13 +1,12 @@
 package golden.services.model.usuarios;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ public class UsuarioDLO {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private UsuarioDAO dao;
 
@@ -35,10 +34,10 @@ public class UsuarioDLO {
 	}
 
 	public ListaUsuarios list() {
-            List<Usuario> findAll = dao.findAll();
-            ListaUsuarios ret = new ListaUsuarios();
-            ret.setUsuarios(findAll);
-            return ret;
+		List<Usuario> findAll = dao.findAll();
+		ListaUsuarios ret = new ListaUsuarios();
+		ret.setUsuarios(findAll);
+		return ret;
 	}
 
 	public Usuario findByEmailAndPassword(String email, String password) {
@@ -80,7 +79,7 @@ public class UsuarioDLO {
 			u.setSexo(sexo);
 			u.setSobre(sobre);
 
-			u.setAtivo(false);
+			u.setAtivo(true);
 			u.setHashAtivo(UUID.randomUUID().toString().replaceAll("-", ""));
 
 			dao.saveAndFlush(u);
@@ -109,6 +108,12 @@ public class UsuarioDLO {
 		}
 
 		return u;
+	}
+
+	public Usuario getCurrentUsuario() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		return dao.findByEmail(email);
 	}
 
 }
