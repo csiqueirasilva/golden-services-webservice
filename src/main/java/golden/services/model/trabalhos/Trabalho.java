@@ -5,6 +5,7 @@ import golden.services.model.avaliacoes.Avaliacao;
 import golden.services.model.usuarios.Usuario;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class Trabalho implements Serializable {
     @Column
     private EstadoTrabalho estado;
 
-    @OneToOne(optional = true)
+    @OneToOne(optional = true, cascade = CascadeType.ALL)
     private Avaliacao avaliacao;
 
     @OneToOne(optional = false)

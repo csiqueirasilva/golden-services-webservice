@@ -7,6 +7,7 @@ package golden.services.model.trabalhos;
 
 import golden.services.model.anuncios.Anuncio;
 import golden.services.model.anuncios.AnuncioDLO;
+import golden.services.model.avaliacoes.Avaliacao;
 import golden.services.model.usuarios.Usuario;
 import golden.services.model.usuarios.UsuarioDLO;
 import java.util.Date;
@@ -156,7 +157,7 @@ public class TrabalhoDLO {
 	public ListaTrabalhos getTrabalhosPrestador() {
 		ListaTrabalhos t = null;
 		Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
-		if(usuarioLogado != null) {
+		if (usuarioLogado != null) {
 			List<Trabalho> findByPrestador = trabalhoDAO.findByPrestador(usuarioLogado);
 			t = new ListaTrabalhos();
 			t.setTrabalhos(findByPrestador);
@@ -167,12 +168,39 @@ public class TrabalhoDLO {
 	public ListaTrabalhos getTrabalhosUsuarioNaoAvaliado() {
 		ListaTrabalhos t = null;
 		Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
-		if(usuarioLogado != null) {
+		if (usuarioLogado != null) {
 			List<Trabalho> findByPrestador = trabalhoDAO.findByUsuarioEncerradoNaoAvaliado(usuarioLogado);
 			t = new ListaTrabalhos();
 			t.setTrabalhos(findByPrestador);
 		}
 		return t;
 	}
-	
+
+	public Trabalho getTrabalhoById(String idTrabalho) {
+		Trabalho t = null;
+
+		try {
+			Long id = Long.parseLong(idTrabalho);
+			t = trabalhoDAO.getOne(id);
+		} catch (Exception e) {
+		}
+
+		return t;
+	}
+
+	public Trabalho addAvaliacao(Long idTrabalho, Avaliacao a) {
+		Trabalho t = trabalhoDAO.getOne(idTrabalho);
+
+		try {
+			if (t != null && a != null) {
+				t.setAvaliacao(a);
+				trabalhoDAO.saveAndFlush(t);
+			}
+		} catch (Exception e) {
+			t = null;
+		}
+		
+		return t;
+	}
+
 }
