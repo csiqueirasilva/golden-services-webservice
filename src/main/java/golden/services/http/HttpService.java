@@ -31,79 +31,83 @@ import org.springframework.stereotype.Service;
 @Service
 public class HttpService {
 
-	public final static class Mappings {
+    public final static class Mappings {
 
-		public final static String USUARIO_LOGIN = "usuarios/login";
-		public final static String USUARIO_LOGOUT = "usuarios/logout";
-		public final static String USUARIO_CRIAR = "usuarios/criar";
-		public final static String USUARIO_ATIVAR = "usuarios/ativar";
-		public final static String USUARIO_LISTAR = "usuarios/list";
-		public final static String USUARIO_CURRENT = "usuarios/current";
-	};
+        public final static String USUARIO_LOGIN = "usuarios/login";
+        public final static String USUARIO_LOGOUT = "usuarios/logout";
+        public final static String USUARIO_CRIAR = "usuarios/criar";
+        public final static String USUARIO_ATIVAR = "usuarios/ativar";
+        public final static String USUARIO_LISTAR = "usuarios/list";
+        public final static String USUARIO_CURRENT = "usuarios/current";
 
-	private final String baseUrl = "http://localhost:8084/GSWebservice/";
+        public final static String ANUNCIO_CRIAR = "anuncios/criar";
+        public final static String ANUNCIO_OBTER = "anuncios/obter";
+        public final static String ANUNCIO_LISTAR = "anuncios/listar";
+    };
 
-	private final HttpClient client = HttpClients.createDefault();
+    private final String baseUrl = "http://localhost:8084/GSWebservice/";
 
-	public String getData(String url, String... args) {
-		List<BasicNameValuePair> params = new ArrayList();
+    private final HttpClient client = HttpClients.createDefault();
 
-		if (args.length > 1) {
-			for (int i = 0; i < args.length; i = i + 2) {
-				params.add(new BasicNameValuePair(args[i], args[i + 1]));
-			}
-		}
+    public String getData(String url, String... args) {
+        List<BasicNameValuePair> params = new ArrayList();
 
-		return getData(url, params);
-	}
+        if (args.length > 1) {
+            for (int i = 0; i < args.length; i = i + 2) {
+                params.add(new BasicNameValuePair(args[i], args[i + 1]));
+            }
+        }
 
-	public <T extends Object> T getData(String url, Class<T> cls, String... args) {
+        return getData(url, params);
+    }
 
-		String json = getData(url, args);
+    public <T extends Object> T getData(String url, Class<T> cls, String... args) {
 
-		T ret = null;
+        String json = getData(url, args);
 
-		try {
-			ret = new ObjectMapper().readValue(json, cls);
-		} catch (IOException ex) {
-			Logger.getLogger(HttpService.class.getName()).log(Level.WARNING, null, ex);
-		}
+        T ret = null;
 
-		return ret;
-	}
+        try {
+            ret = new ObjectMapper().readValue(json, cls);
+        } catch (IOException ex) {
+            Logger.getLogger(HttpService.class.getName()).log(Level.WARNING, null, ex);
+        }
 
-	public String getData(String url, List<BasicNameValuePair> params) {
+        return ret;
+    }
 
-		String ret = null;
+    public String getData(String url, List<BasicNameValuePair> params) {
 
-		try {
+        String ret = null;
 
-			HttpPost httppost = new HttpPost(baseUrl + url);
+        try {
 
-			// Request parameters and other properties.
-			httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+            HttpPost httppost = new HttpPost(baseUrl + url);
 
-			//Execute and get the response.
-			HttpResponse response = client.execute(httppost);
-			HttpEntity entity = response.getEntity();
+            // Request parameters and other properties.
+            httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
-			if (entity != null) {
-				try (InputStream instream = entity.getContent()) {
-					Scanner s = new Scanner(instream).useDelimiter("\\A");
-					String rawJson = s.hasNext() ? s.next() : "";
-					if (rawJson.isEmpty()) {
-						ret = "null";
-					} else {
-						ret = rawJson;
-					}
-				}
-			}
+            //Execute and get the response.
+            HttpResponse response = client.execute(httppost);
+            HttpEntity entity = response.getEntity();
 
-		} catch (IOException ex) {
-			Logger.getLogger(HttpService.class.getName()).log(Level.SEVERE, null, ex);
-		}
+            if (entity != null) {
+                try (InputStream instream = entity.getContent()) {
+                    Scanner s = new Scanner(instream).useDelimiter("\\A");
+                    String rawJson = s.hasNext() ? s.next() : "";
+                    if (rawJson.isEmpty()) {
+                        ret = "null";
+                    } else {
+                        ret = rawJson;
+                    }
+                }
+            }
 
-		return ret;
-	}
+        } catch (IOException ex) {
+            Logger.getLogger(HttpService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return ret;
+    }
 
 }

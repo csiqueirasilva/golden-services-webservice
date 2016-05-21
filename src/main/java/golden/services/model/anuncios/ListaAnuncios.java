@@ -12,13 +12,14 @@ import java.util.List;
  * @author csiqueira
  */
 public class ListaAnuncios {
-	private List<Anuncio> listaAnuncios;
 
-	public List<Anuncio> getListaAnuncios() {
-		return listaAnuncios;
-	}
+    private List<Anuncio> listaAnuncios;
 
-	public void setListaAnuncios(List<Anuncio> listaAnuncios) {
-		this.listaAnuncios = listaAnuncios;
-	}
+    public List<Anuncio> getListaAnuncios() {
+        return listaAnuncios;
+    }
+
+    public void setListaAnuncios(List<Anuncio> listaAnuncios) {
+        this.listaAnuncios = listaAnuncios;
+    }
 }

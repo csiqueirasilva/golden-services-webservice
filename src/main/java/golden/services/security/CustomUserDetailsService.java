@@ -19,12 +19,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-	@Autowired
-	private UsuarioDLO users;
+    @Autowired
+    private UsuarioDLO users;
 
-	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		return users.getUserDetails(email);
-	}
-	
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return users.getUserDetails(email);
+    }
+
 }

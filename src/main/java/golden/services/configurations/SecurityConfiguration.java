@@ -22,53 +22,53 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	CustomUserDetailsService userDetailsService;
+    @Autowired
+    CustomUserDetailsService userDetailsService;
 
-	@Autowired
-	PasswordEncoder passwordEncoder;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-	@Autowired
-	AuthenticationProvider authProvider;
-	
-	@Autowired
-	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authProvider);
-	}
+    @Autowired
+    AuthenticationProvider authProvider;
 
-	@Bean
-	public DaoAuthenticationProvider authProvider() {
-		DaoAuthenticationProvider ap = new DaoAuthenticationProvider();
-		ap.setUserDetailsService(userDetailsService);
-		ap.setPasswordEncoder(passwordEncoder);
-		return ap;
-	}
+    @Autowired
+    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authProvider);
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		return encoder;
-	}
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider ap = new DaoAuthenticationProvider();
+        ap.setUserDetailsService(userDetailsService);
+        ap.setPasswordEncoder(passwordEncoder);
+        return ap;
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-				.csrf().disable()
-				.authorizeRequests()
-				.antMatchers("/usuarios/login", "/usuarios/criar", "/usuarios/ativar", "/error").permitAll()
-				.anyRequest().authenticated()
-				.and()
-				.formLogin()
-				.loginProcessingUrl("/usuarios/login")
-				.usernameParameter("username")
-				.passwordParameter("password")
-				.defaultSuccessUrl("/usuarios/list")
-				.failureUrl("/error")
-				.and()
-				.logout()
-				.logoutUrl("/usuarios/logout")
-				.permitAll();
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder;
+    }
 
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/usuarios/login", "/usuarios/criar", "/usuarios/ativar", "/error").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/usuarios/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/usuarios/list")
+                .failureUrl("/error")
+                .and()
+                .logout()
+                .logoutUrl("/usuarios/logout")
+                .permitAll();
+
+    }
 
 }

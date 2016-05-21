@@ -22,34 +22,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-	@Autowired
-	private UsuarioDLO usuarioDLO;
+    @Autowired
+    private UsuarioDLO usuarioDLO;
 
-	@RequestMapping("/list")
-	public ListaUsuarios getList() {
-		return usuarioDLO.list();
-	}
+    @RequestMapping("/list")
+    public ListaUsuarios getList() {
+        return usuarioDLO.list();
+    }
 
-	@RequestMapping("/count")
-	public Integer getCount() {
-		return usuarioDLO.list().getUsuarios().size();
-	}
+    @RequestMapping("/count")
+    public Integer getCount() {
+        return usuarioDLO.list().getUsuarios().size();
+    }
 
-	@RequestMapping("/criar")
-	public Usuario criarUsuario(@RequestParam String email, @RequestParam String password, @RequestParam String nome, @RequestParam String endereco, @RequestParam String telefone, @RequestParam String sexo, @RequestParam String sobre) {
-		Usuario u = usuarioDLO.createUsuario(email, password, nome, endereco, telefone, sexo, sobre);
-		return u;
-	}
+    @RequestMapping("/criar")
+    public Usuario criarUsuario(@RequestParam String email, @RequestParam String password, @RequestParam String nome, @RequestParam String endereco, @RequestParam String telefone, @RequestParam String sexo, @RequestParam String sobre) {
+        Usuario u = usuarioDLO.createUsuario(email, password, nome, endereco, telefone, sexo, sobre);
+        return u;
+    }
 
-	@RequestMapping("/ativar")
-	public Usuario ativarUsuario(@RequestParam String id, @RequestParam String hash) {
-		Usuario u = usuarioDLO.activateUsuario(id, hash);
-		return u;
-	}
+    @RequestMapping("/ativar")
+    public Usuario ativarUsuario(@RequestParam String id, @RequestParam String hash) {
+        Usuario u = usuarioDLO.activateUsuario(id, hash);
+        return u;
+    }
 
-	@RequestMapping("/current")
-	public Usuario getUsuarioLogado() {
-		return usuarioDLO.getCurrentUsuario();
-	}
+    @RequestMapping("/current")
+    public Usuario getUsuarioLogado() {
+        return usuarioDLO.getCurrentUsuario();
+    }
 
 }
