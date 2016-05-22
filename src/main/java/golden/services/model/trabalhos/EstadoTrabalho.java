@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package golden.services.model.trabalhos;
 
 /**
@@ -10,7 +5,8 @@ package golden.services.model.trabalhos;
  * @author 20141102610
  */
 public enum EstadoTrabalho {
-    NAO_INICIADO,
+	NEGADO,
+	NAO_INICIADO,
     EFETUANDO,
     ENCERRADO;
 }

@@ -22,185 +22,210 @@ import org.springframework.stereotype.Service;
 @Service
 public class TrabalhoDLO {
 
-    @Autowired
-    private TrabalhoDAO trabalhoDAO;
+	@Autowired
+	private TrabalhoDAO trabalhoDAO;
 
-    @Autowired
-    private AnuncioDLO anuncioDLO;
+	@Autowired
+	private AnuncioDLO anuncioDLO;
 
-    @Autowired
-    private UsuarioDLO usuarioDLO;
+	@Autowired
+	private UsuarioDLO usuarioDLO;
 
-    public Trabalho createTrabalho(String idAnuncioString) {
-        Trabalho t = null;
+	public Trabalho createTrabalho(String idAnuncioString) {
+		Trabalho t = null;
 
-        try {
+		try {
 
-            Anuncio anuncio = anuncioDLO.getAnuncio(idAnuncioString);
-            Usuario usuario = usuarioDLO.getCurrentUsuario();
+			Anuncio anuncio = anuncioDLO.getAnuncio(idAnuncioString);
+			Usuario usuario = usuarioDLO.getCurrentUsuario();
 
-            if (anuncio != null && usuario != null && !anuncio.getPrestador().getId().equals(usuario.getId())) {
-                t = new Trabalho();
+			if (anuncio != null && usuario != null && !anuncio.getPrestador().getId().equals(usuario.getId())) {
+				t = new Trabalho();
 
-                t.setAnuncio(anuncio);
-                t.setEstado(EstadoTrabalho.NAO_INICIADO);
-                t.setUsuario(usuario);
+				t.setAnuncio(anuncio);
+				t.setEstado(EstadoTrabalho.NAO_INICIADO);
+				t.setUsuario(usuario);
 
-                trabalhoDAO.saveAndFlush(t);
-            }
+				trabalhoDAO.saveAndFlush(t);
+			}
 
-        } catch (Exception e) {
-        }
+		} catch (Exception e) {
+		}
 
-        return t;
-    }
+		return t;
+	}
 
-    public Trabalho iniciarTrabalho(String idTrabalhoString) {
-        Trabalho t = null;
+	public Trabalho negarTrabalho(String idTrabalhoString) {
+		Trabalho t = null;
 
-        Long idTrabalho = Long.parseLong(idTrabalhoString);
-        Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
+		Long idTrabalho = Long.parseLong(idTrabalhoString);
+		Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
 
-        if (usuarioLogado != null) {
-            t = trabalhoDAO.findOne(idTrabalho);
+		if (usuarioLogado != null) {
+			t = trabalhoDAO.findOne(idTrabalho);
 
-            if (t != null) {
-                Usuario prestador = t.getAnuncio().getPrestador();
+			if (t != null && t.getEstado().equals(EstadoTrabalho.NAO_INICIADO)) {
+				Usuario prestador = t.getAnuncio().getPrestador();
 
-                if (prestador.getId().equals(usuarioLogado.getId())) {
+				if (prestador.getId().equals(usuarioLogado.getId())) {
+					t.setEstado(EstadoTrabalho.NEGADO);
+					trabalhoDAO.saveAndFlush(t);
+				}
+				
+			} else {
+				t = null;
+			}
+		}
 
-                    Usuario usuario = t.getUsuario(); // client
+		return t;
+	}
 
-                    List<Trabalho> trabalhosPrestador = trabalhoDAO.findByPrestadorEfetuando(prestador);
-                    List<Trabalho> trabalhosUsuario = trabalhoDAO.findByUsuarioEfetuando(usuario);
+	public Trabalho iniciarTrabalho(String idTrabalhoString) {
+		Trabalho t = null;
 
-                    if (trabalhosPrestador.isEmpty() && trabalhosUsuario.isEmpty()) {
-                        Date d = new Date();
+		Long idTrabalho = Long.parseLong(idTrabalhoString);
+		Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
 
-                        t.setDatainicio(d);
-                        t.setEstado(EstadoTrabalho.EFETUANDO);
+		if (usuarioLogado != null) {
+			t = trabalhoDAO.findOne(idTrabalho);
 
-                        trabalhoDAO.saveAndFlush(t);
-                    } else {
-                        t = null;
-                    }
+			if (t != null) {
+				Usuario prestador = t.getAnuncio().getPrestador();
 
-                }
-            }
+				if (prestador.getId().equals(usuarioLogado.getId())) {
 
-        }
+					Usuario usuario = t.getUsuario(); // client
 
-        return t;
-    }
+					List<Trabalho> trabalhosPrestador = trabalhoDAO.findByPrestadorEfetuando(prestador);
+					List<Trabalho> trabalhosUsuario = trabalhoDAO.findByUsuarioEfetuando(usuario);
 
-    public Trabalho encerrarTrabalho(String idTrabalhoString) {
-        Trabalho t = null;
+					if (trabalhosPrestador.isEmpty() && trabalhosUsuario.isEmpty()) {
+						Date d = new Date();
 
-        Long idTrabalho = Long.parseLong(idTrabalhoString);
-        Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
+						t.setDatainicio(d);
+						t.setEstado(EstadoTrabalho.EFETUANDO);
 
-        if (usuarioLogado != null) {
-            t = trabalhoDAO.findOne(idTrabalho);
+						trabalhoDAO.saveAndFlush(t);
+					} else {
+						t = null;
+					}
 
-            if (t != null) {
-                Usuario prestador = t.getAnuncio().getPrestador();
+				}
+			}
 
-                if (prestador.getId().equals(usuarioLogado.getId())) {
+		}
 
-                    List<Trabalho> trabalhosPrestador = trabalhoDAO.findByPrestadorEfetuando(prestador);
+		return t;
+	}
 
-                    if (trabalhosPrestador.size() > 0) {
-                        t = trabalhosPrestador.get(0);
+	public Trabalho encerrarTrabalho(String idTrabalhoString) {
+		Trabalho t = null;
 
-                        Date d = new Date();
+		Long idTrabalho = Long.parseLong(idTrabalhoString);
+		Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
 
-                        t.setDatafim(d);
-                        t.setEstado(EstadoTrabalho.ENCERRADO);
-                        trabalhoDAO.saveAndFlush(t);
-                    }
+		if (usuarioLogado != null) {
+			t = trabalhoDAO.findOne(idTrabalho);
 
-                }
-            }
+			if (t != null) {
+				Usuario prestador = t.getAnuncio().getPrestador();
 
-        }
+				if (prestador.getId().equals(usuarioLogado.getId())) {
 
-        return t;
-    }
+					List<Trabalho> trabalhosPrestador = trabalhoDAO.findByPrestadorEfetuando(prestador);
 
-    public TrabalhoAtual getTrabalhoAtual() {
-        Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
-        TrabalhoAtual t = null;
+					if (trabalhosPrestador.size() > 0) {
+						t = trabalhosPrestador.get(0);
 
-        if (usuarioLogado != null) {
+						Date d = new Date();
 
-            List<Trabalho> trabalhosPrestador = trabalhoDAO.findByPrestadorEfetuando(usuarioLogado);
-            List<Trabalho> trabalhosUsuario = trabalhoDAO.findByUsuarioEfetuando(usuarioLogado);
+						t.setDatafim(d);
+						t.setEstado(EstadoTrabalho.ENCERRADO);
+						trabalhoDAO.saveAndFlush(t);
+					}
 
-            if (trabalhosPrestador.size() > 0 || trabalhosUsuario.size() > 0) {
-                t = new TrabalhoAtual();
+				}
+			}
 
-                if (trabalhosPrestador.size() > 0) {
-                    Trabalho trabalho = trabalhosPrestador.get(0);
-                    t.setTrabalho(trabalho);
-                    t.setPapel(PapelTrabalho.PRESTADOR);
-                } else {
-                    Trabalho trabalho = trabalhosUsuario.get(0);
-                    t.setTrabalho(trabalho);
-                    t.setPapel(PapelTrabalho.USUARIO);
-                }
-            }
-        }
+		}
 
-        return t;
-    }
+		return t;
+	}
 
-    public ListaTrabalhos getTrabalhosPrestador() {
-        ListaTrabalhos t = null;
-        Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
-        if (usuarioLogado != null) {
-            List<Trabalho> findByPrestador = trabalhoDAO.findByPrestador(usuarioLogado);
-            t = new ListaTrabalhos();
-            t.setTrabalhos(findByPrestador);
-        }
-        return t;
-    }
+	public TrabalhoAtual getTrabalhoAtual() {
+		Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
+		TrabalhoAtual t = null;
 
-    public ListaTrabalhos getTrabalhosUsuarioNaoAvaliado() {
-        ListaTrabalhos t = null;
-        Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
-        if (usuarioLogado != null) {
-            List<Trabalho> findByPrestador = trabalhoDAO.findByUsuarioEncerradoNaoAvaliado(usuarioLogado);
-            t = new ListaTrabalhos();
-            t.setTrabalhos(findByPrestador);
-        }
-        return t;
-    }
+		if (usuarioLogado != null) {
 
-    public Trabalho getTrabalhoById(String idTrabalho) {
-        Trabalho t = null;
+			List<Trabalho> trabalhosPrestador = trabalhoDAO.findByPrestadorEfetuando(usuarioLogado);
+			List<Trabalho> trabalhosUsuario = trabalhoDAO.findByUsuarioEfetuando(usuarioLogado);
 
-        try {
-            Long id = Long.parseLong(idTrabalho);
-            t = trabalhoDAO.getOne(id);
-        } catch (Exception e) {
-        }
+			if (trabalhosPrestador.size() > 0 || trabalhosUsuario.size() > 0) {
+				t = new TrabalhoAtual();
 
-        return t;
-    }
+				if (trabalhosPrestador.size() > 0) {
+					Trabalho trabalho = trabalhosPrestador.get(0);
+					t.setTrabalho(trabalho);
+					t.setPapel(PapelTrabalho.PRESTADOR);
+				} else {
+					Trabalho trabalho = trabalhosUsuario.get(0);
+					t.setTrabalho(trabalho);
+					t.setPapel(PapelTrabalho.USUARIO);
+				}
+			}
+		}
 
-    public Trabalho addAvaliacao(Long idTrabalho, Avaliacao a) {
-        Trabalho t = trabalhoDAO.getOne(idTrabalho);
+		return t;
+	}
 
-        try {
-            if (t != null && a != null) {
-                t.setAvaliacao(a);
-                trabalhoDAO.saveAndFlush(t);
-            }
-        } catch (Exception e) {
-            t = null;
-        }
+	public ListaTrabalhos getTrabalhosPrestador() {
+		ListaTrabalhos t = null;
+		Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
+		if (usuarioLogado != null) {
+			List<Trabalho> findByPrestador = trabalhoDAO.findByPrestador(usuarioLogado);
+			t = new ListaTrabalhos();
+			t.setTrabalhos(findByPrestador);
+		}
+		return t;
+	}
 
-        return t;
-    }
+	public ListaTrabalhos getTrabalhosUsuarioNaoAvaliado() {
+		ListaTrabalhos t = null;
+		Usuario usuarioLogado = usuarioDLO.getCurrentUsuario();
+		if (usuarioLogado != null) {
+			List<Trabalho> findByPrestador = trabalhoDAO.findByUsuarioEncerradoNaoAvaliado(usuarioLogado);
+			t = new ListaTrabalhos();
+			t.setTrabalhos(findByPrestador);
+		}
+		return t;
+	}
+
+	public Trabalho getTrabalhoById(String idTrabalho) {
+		Trabalho t = null;
+
+		try {
+			Long id = Long.parseLong(idTrabalho);
+			t = trabalhoDAO.getOne(id);
+		} catch (Exception e) {
+		}
+
+		return t;
+	}
+
+	public Trabalho addAvaliacao(Long idTrabalho, Avaliacao a) {
+		Trabalho t = trabalhoDAO.getOne(idTrabalho);
+
+		try {
+			if (t != null && a != null) {
+				t.setAvaliacao(a);
+				trabalhoDAO.saveAndFlush(t);
+			}
+		} catch (Exception e) {
+			t = null;
+		}
+
+		return t;
+	}
 
 }
