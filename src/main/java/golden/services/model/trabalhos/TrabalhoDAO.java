@@ -28,5 +28,5 @@ public interface TrabalhoDAO extends JpaRepository<Trabalho, Long> {
 	List<Trabalho> findByUsuarioEncerradoNaoAvaliado(@Param("usuario") Usuario usuario);
 
 	@Query("DELETE FROM Trabalho t WHERE t.estado = golden.services.model.trabalhos.EstadoTrabalho.NAO_INICIADO and t.usuario = :usuario and t.id = :id")
-	Long deleteByIdAndUsuario(@Param("id") Long id, @Param("usuario") Usuario usuario);
+	Long deleteNaoIniciadoByIdAndUsuario(@Param("id") Long id, @Param("usuario") Usuario usuario);
 }

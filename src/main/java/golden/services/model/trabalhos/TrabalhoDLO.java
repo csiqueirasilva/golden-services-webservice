@@ -55,6 +55,23 @@ public class TrabalhoDLO {
 		return t;
 	}
 
+	public Long cancelarTrabalho(String idTrabalhoString) {
+		Long countDeleted = 0l;
+
+		try {
+
+			Long idTrabalho = Long.parseLong(idTrabalhoString);
+			Usuario usuario = usuarioDLO.getCurrentUsuario();
+
+			countDeleted = trabalhoDAO.deleteNaoIniciadoByIdAndUsuario(idTrabalho, usuario);
+			trabalhoDAO.flush();
+
+		} catch (Exception e) {
+		}
+
+		return countDeleted;		
+	}
+	
 	public Trabalho negarTrabalho(String idTrabalhoString) {
 		Trabalho t = null;
 
