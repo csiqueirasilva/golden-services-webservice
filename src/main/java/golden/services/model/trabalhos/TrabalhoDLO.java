@@ -55,7 +55,7 @@ public class TrabalhoDLO {
 		return t;
 	}
 
-	public Long cancelarTrabalho(String idTrabalhoString) {
+	public Long cancelTrabalho(String idTrabalhoString) {
 		Long countDeleted = 0l;
 
 		try {
@@ -72,7 +72,7 @@ public class TrabalhoDLO {
 		return countDeleted;		
 	}
 	
-	public Trabalho negarTrabalho(String idTrabalhoString) {
+	public Trabalho denyTrabalho(String idTrabalhoString) {
 		Trabalho t = null;
 
 		Long idTrabalho = Long.parseLong(idTrabalhoString);
