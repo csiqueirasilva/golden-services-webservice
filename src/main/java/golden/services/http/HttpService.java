@@ -43,6 +43,17 @@ public class HttpService {
         public final static String ANUNCIO_CRIAR = "anuncios/criar";
         public final static String ANUNCIO_OBTER = "anuncios/obter";
         public final static String ANUNCIO_LISTAR = "anuncios/listar";
+		
+        public final static String TRABALHO_CRIAR = "trabalhos/criar";
+        public final static String TRABALHO_LISTAR_PRESTADOR = "trabalhos/listar";
+        public final static String TRABALHO_LISTAR_CLIENTE = "trabalhos/listar-nao-avaliados";
+        public final static String TRABALHO_ATUAL = "trabalhos/atual";
+        public final static String TRABALHO_CANCELAR = "trabalhos/cancelar";
+        public final static String TRABALHO_ENCERRAR = "trabalhos/encerrar";
+        public final static String TRABALHO_CONFIRMAR = "trabalhos/confirmar";
+	
+		public final static String AVALIACAO_CRIAR = "avaliacoes/criar";
+		
     };
 
     private final String baseUrl = "http://localhost:8084/GSWebservice/";

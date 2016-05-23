@@ -5,8 +5,10 @@ import golden.services.http.HttpService;
 import golden.services.model.usuarios.ListaUsuarios;
 import golden.services.model.usuarios.Usuario;
 import junit.framework.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,6 +21,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {HttpService.class})
 @Configurable
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GSTest {
 
     private final String passwordUsuario = "a";
