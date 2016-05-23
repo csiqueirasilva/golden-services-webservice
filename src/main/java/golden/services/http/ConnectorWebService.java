@@ -2,6 +2,10 @@ package golden.services.http;
 
 import golden.services.model.anuncios.Anuncio;
 import golden.services.model.anuncios.ListaAnuncios;
+import golden.services.model.trabalhos.ListaTrabalhos;
+import golden.services.model.trabalhos.Trabalho;
+import golden.services.model.trabalhos.TrabalhoAtual;
+import golden.services.model.trabalhos.avaliacoes.Avaliacao;
 import golden.services.model.usuarios.ListaUsuarios;
 import golden.services.model.usuarios.Usuario;
 import org.springframework.stereotype.Service;
@@ -53,4 +57,36 @@ public class ConnectorWebService {
         return HTTP_HANDLER.getData(HttpService.Mappings.ANUNCIO_OBTER, Anuncio.class, "id", idAnuncio);
     }
 
+	public static Trabalho criarTrabalho(String idAnuncio) {
+        return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_CRIAR, Trabalho.class, "idAnuncio", idAnuncio);
+    }
+
+    public static ListaTrabalhos listarTrabalhoPrestador() {
+        return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_LISTAR_PRESTADOR, ListaTrabalhos.class);
+    }
+
+	public static ListaTrabalhos listarTrabalhoClienteNaoAvaliado() {
+        return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_LISTAR_CLIENTE, ListaTrabalhos.class);
+    }
+	
+    public static TrabalhoAtual obterTrabalhoAtual() {
+        return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_ATUAL, TrabalhoAtual.class);
+    }
+
+	public static Trabalho cancelarTrabalho(String idTrabalho) {
+        return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_CANCELAR, Trabalho.class, "idTrabalho", idTrabalho);
+    }	
+
+	public static Trabalho encerrarTrabalho(String idTrabalho) {
+        return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_ENCERRAR, Trabalho.class, "idTrabalho", idTrabalho);
+    }
+
+	public static Trabalho confirmarTrabalho(String idTrabalho) {
+        return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_CONFIRMAR, Trabalho.class, "idTrabalho", idTrabalho);
+    }
+
+	public static Avaliacao avaliarTrabalho(String idTrabalho, String comentario, String nota) {
+        return HTTP_HANDLER.getData(HttpService.Mappings.AVALIACAO_CRIAR, Avaliacao.class, "idTrabalho", idTrabalho, "comentario", comentario, "nota", nota);
+    }
+	
 }

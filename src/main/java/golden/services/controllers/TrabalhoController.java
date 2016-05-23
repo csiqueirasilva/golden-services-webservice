@@ -26,7 +26,7 @@ public class TrabalhoController {
 	TrabalhoDLO trabalhoDLO;
 
 	@RequestMapping("/criar")
-	public Trabalho createAnuncio(@RequestParam String idAnuncio) {
+	public Trabalho criarTrabalho(@RequestParam String idAnuncio) {
 		return trabalhoDLO.createTrabalho(idAnuncio);
 	}
 
@@ -52,12 +52,12 @@ public class TrabalhoController {
 
 	@RequestMapping("/encerrar") /* prestador */
 	public Trabalho encerrarTrabalho(@RequestParam String idTrabalho) {
-		return trabalhoDLO.encerrarTrabalho(idTrabalho);
+		return trabalhoDLO.endTrabalho(idTrabalho);
 	}
 	
 	@RequestMapping("/confirmar") /* prestador */
 	public Trabalho confirmarTrabalho(@RequestParam String idTrabalho) {
-		return trabalhoDLO.iniciarTrabalho(idTrabalho);
+		return trabalhoDLO.startTrabalho(idTrabalho);
 	}
 	
 }

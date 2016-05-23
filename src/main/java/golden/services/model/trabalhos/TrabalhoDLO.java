@@ -97,7 +97,7 @@ public class TrabalhoDLO {
 		return t;
 	}
 
-	public Trabalho iniciarTrabalho(String idTrabalhoString) {
+	public Trabalho startTrabalho(String idTrabalhoString) {
 		Trabalho t = null;
 
 		Long idTrabalho = Long.parseLong(idTrabalhoString);
@@ -135,7 +135,7 @@ public class TrabalhoDLO {
 		return t;
 	}
 
-	public Trabalho encerrarTrabalho(String idTrabalhoString) {
+	public Trabalho endTrabalho(String idTrabalhoString) {
 		Trabalho t = null;
 
 		Long idTrabalho = Long.parseLong(idTrabalhoString);
