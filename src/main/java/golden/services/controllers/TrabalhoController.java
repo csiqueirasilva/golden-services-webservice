@@ -59,5 +59,10 @@ public class TrabalhoController {
 	public Trabalho confirmarTrabalho(@RequestParam String idTrabalho) {
 		return trabalhoDLO.startTrabalho(idTrabalho);
 	}
-	
+
+    @RequestMapping("/negar") /* prestador */
+	public Trabalho negarTrabalho(@RequestParam String idTrabalho) {
+		return trabalhoDLO.denyTrabalho(idTrabalho);
+	}
+    
 }

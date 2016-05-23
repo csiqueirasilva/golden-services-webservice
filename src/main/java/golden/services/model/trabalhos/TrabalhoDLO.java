@@ -12,10 +12,6 @@ import golden.services.model.usuarios.Usuario;
 import golden.services.model.usuarios.UsuarioDLO;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TestName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,7 +88,9 @@ public class TrabalhoDLO {
 				if (prestador.getId().equals(usuarioLogado.getId())) {
 					t.setEstado(EstadoTrabalho.NEGADO);
 					trabalhoDAO.saveAndFlush(t);
-				}
+				} else {
+                    t = null;
+                }
 
 			} else {
 				t = null;
