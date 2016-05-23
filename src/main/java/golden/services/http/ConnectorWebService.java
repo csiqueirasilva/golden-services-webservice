@@ -88,6 +88,10 @@ public class ConnectorWebService {
     public static Trabalho negarTrabalho(String idTrabalho) {
         return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_NEGAR, Trabalho.class, "idTrabalho", idTrabalho);
     }
+
+    public static Trabalho obterTrabalho(String idTrabalho) {
+        return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_OBTER, Trabalho.class, "idTrabalho", idTrabalho);
+    }
     
 	public static Avaliacao avaliarTrabalho(String idTrabalho, String comentario, String nota) {
         return HTTP_HANDLER.getData(HttpService.Mappings.AVALIACAO_CRIAR, Avaliacao.class, "idTrabalho", idTrabalho, "comentario", comentario, "nota", nota);

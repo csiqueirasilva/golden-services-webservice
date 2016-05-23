@@ -64,5 +64,10 @@ public class TrabalhoController {
 	public Trabalho negarTrabalho(@RequestParam String idTrabalho) {
 		return trabalhoDLO.denyTrabalho(idTrabalho);
 	}
+
+    @RequestMapping("/obter") /* prestador */
+	public Trabalho obterTrabalho(@RequestParam String idTrabalho) {
+		return trabalhoDLO.obterTrabalho(idTrabalho);
+	}
     
 }

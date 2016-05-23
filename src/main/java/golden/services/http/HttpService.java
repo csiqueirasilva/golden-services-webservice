@@ -52,7 +52,8 @@ public class HttpService {
         public final static String TRABALHO_ENCERRAR = "trabalhos/encerrar";
         public final static String TRABALHO_CONFIRMAR = "trabalhos/confirmar";
         public final static String TRABALHO_NEGAR = "trabalhos/negar";
-	
+        public final static String TRABALHO_OBTER = "trabalhos/obter";
+
 		public final static String AVALIACAO_CRIAR = "avaliacoes/criar";
 		
     };

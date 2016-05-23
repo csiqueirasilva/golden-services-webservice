@@ -256,4 +256,14 @@ public class TrabalhoDLO {
 		return t;
 	}
 
+    public Trabalho obterTrabalho(String idTrabalho) {
+        Trabalho ret = null;
+        try {
+            Long id = Long.parseLong(idTrabalho);
+            ret = trabalhoDAO.findOne(id);
+        } catch (Exception e) {
+        }
+        return ret;
+    }
+
 }
