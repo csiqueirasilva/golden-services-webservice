@@ -12,6 +12,10 @@ import golden.services.model.usuarios.Usuario;
 import golden.services.model.usuarios.UsuarioDLO;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +59,8 @@ public class TrabalhoDLO {
 		return t;
 	}
 
-	public Long cancelTrabalho(String idTrabalhoString) {
-		Long countDeleted = 0l;
+	public int cancelTrabalho(String idTrabalhoString) {
+		int countDeleted = 0;
 
 		try {
 
@@ -67,11 +71,12 @@ public class TrabalhoDLO {
 			trabalhoDAO.flush();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		return countDeleted;		
+		return countDeleted;
 	}
-	
+
 	public Trabalho denyTrabalho(String idTrabalhoString) {
 		Trabalho t = null;
 
@@ -88,7 +93,7 @@ public class TrabalhoDLO {
 					t.setEstado(EstadoTrabalho.NEGADO);
 					trabalhoDAO.saveAndFlush(t);
 				}
-				
+
 			} else {
 				t = null;
 			}
@@ -116,7 +121,7 @@ public class TrabalhoDLO {
 					List<Trabalho> trabalhosPrestador = trabalhoDAO.findByPrestadorEfetuando(prestador);
 					List<Trabalho> trabalhosUsuario = trabalhoDAO.findByUsuarioEfetuando(usuario);
 
-					if (trabalhosPrestador.isEmpty() && trabalhosUsuario.isEmpty()) {
+					if (trabalhosPrestador.isEmpty() && trabalhosUsuario.size() == 1 && trabalhosUsuario.get(0).getId().equals(t.getId())) {
 						Date d = new Date();
 
 						t.setDatainicio(d);
@@ -127,6 +132,8 @@ public class TrabalhoDLO {
 						t = null;
 					}
 
+				} else {
+					t = null;
 				}
 			}
 
@@ -151,7 +158,8 @@ public class TrabalhoDLO {
 
 					List<Trabalho> trabalhosPrestador = trabalhoDAO.findByPrestadorEfetuando(prestador);
 
-					if (trabalhosPrestador.size() > 0) {
+					if (trabalhosPrestador.size() == 1 && trabalhosPrestador.get(0).getId().equals(t.getId())) {
+						
 						t = trabalhosPrestador.get(0);
 
 						Date d = new Date();
@@ -159,8 +167,13 @@ public class TrabalhoDLO {
 						t.setDatafim(d);
 						t.setEstado(EstadoTrabalho.ENCERRADO);
 						trabalhoDAO.saveAndFlush(t);
+						
+					} else {
+						t = null;
 					}
 
+				} else {
+					t = null;
 				}
 			}
 

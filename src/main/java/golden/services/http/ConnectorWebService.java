@@ -73,8 +73,8 @@ public class ConnectorWebService {
         return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_ATUAL, TrabalhoAtual.class);
     }
 
-	public static Trabalho cancelarTrabalho(String idTrabalho) {
-        return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_CANCELAR, Trabalho.class, "idTrabalho", idTrabalho);
+	public static Integer cancelarTrabalho(String idTrabalho) {
+        return HTTP_HANDLER.getData(HttpService.Mappings.TRABALHO_CANCELAR, Integer.class, "idTrabalho", idTrabalho);
     }	
 
 	public static Trabalho encerrarTrabalho(String idTrabalho) {

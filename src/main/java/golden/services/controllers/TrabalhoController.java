@@ -46,7 +46,7 @@ public class TrabalhoController {
 	}
 
 	@RequestMapping("/cancelar") /* cliente */
-	public Long cancelarTrabalho(@RequestParam String idTrabalho) {
+	public int cancelarTrabalho(@RequestParam String idTrabalho) {
 		return trabalhoDLO.cancelTrabalho(idTrabalho);
 	}
 
