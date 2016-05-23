@@ -28,8 +28,8 @@ public class ConnectorWebService {
         return HTTP_HANDLER.getData(HttpService.Mappings.USUARIO_ATIVAR, Usuario.class, "id", id, "hash", hash);
     }
 
-    public static Usuario logarUsuario(String email, String password) {
-        return HTTP_HANDLER.getData(HttpService.Mappings.USUARIO_LOGIN, Usuario.class, "username", email, "password", password);
+    public static Object logarUsuario(String email, String password) {
+        return HTTP_HANDLER.getData(HttpService.Mappings.USUARIO_LOGIN, Object.class, "username", email, "password", password);
     }
 
     public static Usuario getUsuarioLogado() {

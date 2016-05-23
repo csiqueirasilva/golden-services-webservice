@@ -4,7 +4,7 @@ import golden.services.http.ConnectorWebService;
 import golden.services.http.HttpService;
 import golden.services.model.usuarios.ListaUsuarios;
 import golden.services.model.usuarios.Usuario;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,56 +24,98 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GSTest {
 
-    private final String passwordUsuario = "a";
+	private static final String PASSWORD_USUARIO = "a";
 
-    private Usuario criarUsuario() {
-        int rng = (int) (Math.random() * 1000);
-        String emailUsuario = rng + System.currentTimeMillis() + "a@a.com";
-        return ConnectorWebService.criarUsuario(emailUsuario, passwordUsuario, "", "", "", "", "");
-    }
+	private static Usuario prestador;
+	private static Usuario cliente;
 
-    @Test
-    public void criarUsuarioTest() {
+	private Usuario criarUsuario() {
+		int rng = (int) (Math.random() * 1000);
+		String emailUsuario = rng + System.currentTimeMillis() + "a@a.com";
+		return ConnectorWebService.criarUsuario(emailUsuario, PASSWORD_USUARIO, "", "", "", "", "");
+	}
 
-        Object ret = ConnectorWebService.deslogarUsuario();
-        System.out.println(ret);
+	@Test
+	public void Test0001_criarUsuarioTest() throws Exception {
+		Object ret = ConnectorWebService.deslogarUsuario();
 
-        Usuario usuarioCriado1 = criarUsuario();
+		Assert.assertTrue(ret == null || ret.equals("null"));
 
-        //String hashAtivo = usuarioCriado.getHashAtivo();
-        //String idUsuario = usuarioCriado.getId().toString();
-        //Usuario usuarioConfirmado = ConnectorWebService.confirmarUsuario(idUsuario, hashAtivo);
-        Usuario usuarioLogado1 = ConnectorWebService.logarUsuario(usuarioCriado1.getEmail(), passwordUsuario);
+		prestador = criarUsuario();
 
-        ListaUsuarios listaUsuarios = ConnectorWebService.listarUsuarios();
-        System.out.println(listaUsuarios);
+		Assert.assertNotNull(prestador);
+	}
 
-        ret = ConnectorWebService.deslogarUsuario();
-        System.out.println(ret);
-    }
+	@Test
+	public void Test0002_criarUsuarioErroEmailJaExiste() throws Exception {
+		Usuario erro = ConnectorWebService.criarUsuario(prestador.getEmail(), PASSWORD_USUARIO, "", "", "", "", "");
+		Assert.assertNull(erro);
+	}
+	
+	@Test
+	public void Test0003_criarUsuarioErroEmailInvalido() throws Exception {
+		Usuario erro = ConnectorWebService.criarUsuario("@.com", PASSWORD_USUARIO, "", "", "", "", "");
+		Assert.assertNull(erro);
+	}
+	
+	@Test
+	public void Test0004_criarUsuarioClienteTest() throws Exception {
+		cliente = criarUsuario();
+		Assert.assertNotNull(cliente);
+	}
 
-    @Test
-    public void logarSeguidamente() throws Exception {
+	@Test
+	public void Test0005_logarUsuario() throws Exception {
+		Object ret = ConnectorWebService.logarUsuario(prestador.getEmail(), PASSWORD_USUARIO);
 
-        Usuario usuarioPreviamenteLogado = ConnectorWebService.getUsuarioLogado();
+		Assert.assertTrue(ret == null || ret.equals("null"));
 
-        System.out.println(usuarioPreviamenteLogado);
+		Usuario usuarioLogado = ConnectorWebService.getUsuarioLogado();
 
-        Assert.assertNull(usuarioPreviamenteLogado);
+		Assert.assertNotNull(usuarioLogado);
+	}
 
-        Usuario u1 = criarUsuario();
-        Usuario u2 = criarUsuario();
-        ConnectorWebService.logarUsuario(u1.getEmail(), passwordUsuario);
+	@Test
+	public void Test0006_listUsuario() {
+		ListaUsuarios listaUsuarios = ConnectorWebService.listarUsuarios();
+		Assert.assertNotNull(listaUsuarios);
+	}
 
-        System.out.println("USUARIO LOGADO : " + u1.getEmail());
+	@Test
+	public void Test0007_deslogarUsuario() {
+		Usuario usuarioLogado = ConnectorWebService.getUsuarioLogado();
 
-        ConnectorWebService.logarUsuario(u2.getEmail(), passwordUsuario);
+		Assert.assertTrue(usuarioLogado != null);
 
-        System.out.println("USUARIO LOGADO : " + u2.getEmail());
+		Assert.assertTrue(usuarioLogado.getId().equals(prestador.getId()));
 
-        String email = ConnectorWebService.getUsuarioLogado().getEmail();
+		Object ret = ConnectorWebService.deslogarUsuario();
+		Assert.assertTrue(ret == null || ret.equals("null"));
+	}
 
-        System.out.println("USUARIO LOGADO : " + email);
-    }
-    
+	@Test
+	public void Test0100_logarSeguidamente() throws Exception {
+
+		Usuario usuarioPreviamenteLogado = ConnectorWebService.getUsuarioLogado();
+
+		Assert.assertTrue(usuarioPreviamenteLogado == null);
+
+		Usuario u1 = criarUsuario();
+		Usuario u2 = criarUsuario();
+
+		String emailU2 = u2.getEmail();
+
+		ConnectorWebService.logarUsuario(u1.getEmail(), PASSWORD_USUARIO);
+		ConnectorWebService.logarUsuario(u2.getEmail(), PASSWORD_USUARIO);
+
+		String email = ConnectorWebService.getUsuarioLogado().getEmail();
+
+		Assert.assertTrue(email.equals(emailU2));
+	}
+
+	@Test
+	public void Test0200_criarTrabalho() {
+
+	}
+
 }
