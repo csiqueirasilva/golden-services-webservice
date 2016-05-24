@@ -58,7 +58,8 @@ public class HttpService {
 		
     };
 
-    private final String baseUrl = "http://localhost:8084/GSWebservice/";
+    //private final String baseUrl = "http://localhost:8084/GSWebservice/";
+	private final String baseUrl = "http://daed-dev.on.br/GSWebservice/";
 
     private final HttpClient client = HttpClients.createDefault();
 

@@ -7,6 +7,7 @@ import golden.services.model.anuncios.ListaAnuncios;
 import golden.services.model.anuncios.TipoServico;
 import golden.services.model.trabalhos.ListaTrabalhos;
 import golden.services.model.trabalhos.Trabalho;
+import golden.services.model.trabalhos.avaliacoes.Avaliacao;
 import golden.services.model.usuarios.ListaUsuarios;
 import golden.services.model.usuarios.Usuario;
 import org.junit.Assert;
@@ -268,4 +269,19 @@ public class GSTest {
 		Assert.assertNotNull(encerrarTrabalho);
 	}
 
+	@Test
+	public void Test0400_avaliarErradoTrabalho() {
+		Avaliacao avaliarTrabalho = ConnectorWebService.avaliarTrabalho(trabalhoReferencia.getId().toString(), "AVALIACAO COMENTARIO", "5");
+		Assert.assertNull(avaliarTrabalho);
+	}
+
+	@Test
+	public void Test0401_avaliarCorretamenteTrabalho() {
+		loginUsuarioCliente();
+		Avaliacao avaliarTrabalho = ConnectorWebService.avaliarTrabalho(trabalhoReferencia.getId().toString(), "AVALIACAO COMENTARIO", "5");
+		Assert.assertNotNull(avaliarTrabalho);
+	}
+
+	
+	
 }

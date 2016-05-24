@@ -246,9 +246,11 @@ public class TrabalhoDLO {
 		Trabalho t = trabalhoDAO.getOne(idTrabalho);
 
 		try {
-			if (t != null && a != null) {
+			if (t != null && a != null && t.getAvaliacao() == null) {
 				t.setAvaliacao(a);
 				trabalhoDAO.saveAndFlush(t);
+			} else {
+				t = null;
 			}
 		} catch (Exception e) {
 			t = null;
