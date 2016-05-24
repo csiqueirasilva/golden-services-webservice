@@ -50,6 +50,7 @@ public class TrabalhoDLO {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return t;

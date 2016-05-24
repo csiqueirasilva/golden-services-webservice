@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -35,10 +37,10 @@ public class Trabalho implements Serializable {
     @OneToOne(optional = true, cascade = CascadeType.ALL)
     private Avaliacao avaliacao;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Anuncio anuncio;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Usuario usuario;
 
     @Id

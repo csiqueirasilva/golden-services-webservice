@@ -221,18 +221,25 @@ public class GSTest {
 
 	@Test
 	public void Test0306_erroAoRecusarTrabalhoAlheio() {
-		// to do
-		//Trabalho confirmarTrabalho = ConnectorWebService.confirmarTrabalho(trabalhoReferencia.getId().toString());
-		//Assert.assertNull(confirmarTrabalho);
+		loginUsuarioCliente();
+		Trabalho negarTrabalho = ConnectorWebService.negarTrabalho(trabalhoReferencia.getId().toString());
+		Assert.assertNull(negarTrabalho);
 	}
 
 	@Test
 	public void Test0307_recusarTrabalho() {
-		// to do
-		//Trabalho confirmarTrabalho = ConnectorWebService.confirmarTrabalho(trabalhoReferencia.getId().toString());
-		//Assert.assertNull(confirmarTrabalho);
+		loginUsuarioPrestador();
+		Trabalho negarTrabalho = ConnectorWebService.negarTrabalho(trabalhoReferencia.getId().toString());
+		Assert.assertNotNull(negarTrabalho);
 	}
 
+	@Test
+	public void Test0308_requeueTrabalho() {
+		loginUsuarioCliente();
+		trabalhoReferencia = ConnectorWebService.criarTrabalho(anuncioReferencia.getId().toString());
+		Assert.assertNotNull(trabalhoReferencia);
+	}
+	
 	@Test
 	public void Test0316_erroAoAceitarTrabalhoAlheio() {
 		loginUsuarioCliente();
