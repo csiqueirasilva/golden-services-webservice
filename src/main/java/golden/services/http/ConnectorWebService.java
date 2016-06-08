@@ -6,6 +6,7 @@ import golden.services.model.trabalhos.ListaTrabalhos;
 import golden.services.model.trabalhos.Trabalho;
 import golden.services.model.trabalhos.TrabalhoAtual;
 import golden.services.model.trabalhos.avaliacoes.Avaliacao;
+import golden.services.model.trabalhos.avaliacoes.AvaliacaoAgregada;
 import golden.services.model.usuarios.ListaUsuarios;
 import golden.services.model.usuarios.Usuario;
 import org.springframework.stereotype.Service;
@@ -96,5 +97,9 @@ public class ConnectorWebService {
 	public static Avaliacao avaliarTrabalho(String idTrabalho, String comentario, String nota) {
         return HTTP_HANDLER.getData(HttpService.Mappings.AVALIACAO_CRIAR, Avaliacao.class, "idTrabalho", idTrabalho, "comentario", comentario, "nota", nota);
     }
+	
+	public static AvaliacaoAgregada agregarAvaliacao(String idAnuncio) {
+		return HTTP_HANDLER.getData(HttpService.Mappings.AVALIACAO_AGREGAR, AvaliacaoAgregada.class, "idAnuncio", idAnuncio);
+	}
 	
 }

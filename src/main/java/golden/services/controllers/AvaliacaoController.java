@@ -6,6 +6,7 @@
 package golden.services.controllers;
 
 import golden.services.model.trabalhos.avaliacoes.Avaliacao;
+import golden.services.model.trabalhos.avaliacoes.AvaliacaoAgregada;
 import golden.services.model.trabalhos.avaliacoes.AvaliacaoDLO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +28,10 @@ public class AvaliacaoController {
     public Avaliacao createAvaliacao(@RequestParam String idTrabalho, @RequestParam String comentario, @RequestParam String nota) {
         return avaliacaoDLO.avaliarTrabalho(idTrabalho, comentario, nota);
     }
+	
+	@RequestMapping("/agregar")
+	public AvaliacaoAgregada agregarAvaliacao(@RequestParam String idAnuncio) {
+		return avaliacaoDLO.agregarAvaliacao(idAnuncio);
+	}
 	
 }

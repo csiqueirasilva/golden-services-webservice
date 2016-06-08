@@ -55,6 +55,7 @@ public class HttpService {
         public final static String TRABALHO_OBTER = "trabalhos/obter";
 
 		public final static String AVALIACAO_CRIAR = "avaliacoes/criar";
+		public final static String AVALIACAO_AGREGAR = "avaliacoes/agregar";
 		
     };
 

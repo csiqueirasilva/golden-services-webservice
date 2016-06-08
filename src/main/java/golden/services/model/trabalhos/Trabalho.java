@@ -24,11 +24,11 @@ import javax.persistence.Temporal;
 public class Trabalho implements Serializable {
 
 	@Column
-	@Temporal(javax.persistence.TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	private Date datainicio;
 
 	@Column
-	@Temporal(javax.persistence.TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	private Date datafim;
 
 	@Column

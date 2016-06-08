@@ -8,6 +8,7 @@ import golden.services.model.anuncios.TipoServico;
 import golden.services.model.trabalhos.ListaTrabalhos;
 import golden.services.model.trabalhos.Trabalho;
 import golden.services.model.trabalhos.avaliacoes.Avaliacao;
+import golden.services.model.trabalhos.avaliacoes.AvaliacaoAgregada;
 import golden.services.model.usuarios.ListaUsuarios;
 import golden.services.model.usuarios.Usuario;
 import org.junit.Assert;
@@ -282,6 +283,13 @@ public class GSTest {
 		Assert.assertNotNull(avaliarTrabalho);
 	}
 
-	
+	@Test
+	public void Test0402_agregarAvaliacao() {
+		loginUsuarioCliente();
+		AvaliacaoAgregada ag = ConnectorWebService.agregarAvaliacao(anuncioReferencia.getId().toString());
+		Assert.assertNotNull(ag);
+		Assert.assertTrue(1 == ag.getTotalAvaliacoes());
+		Assert.assertTrue(5 == ag.getTotalPontos());
+	}
 	
 }

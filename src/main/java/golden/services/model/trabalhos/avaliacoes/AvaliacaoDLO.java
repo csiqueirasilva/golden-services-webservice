@@ -5,10 +5,13 @@
  */
 package golden.services.model.trabalhos.avaliacoes;
 
+import golden.services.model.anuncios.Anuncio;
+import golden.services.model.anuncios.AnuncioDLO;
 import golden.services.model.trabalhos.Trabalho;
 import golden.services.model.trabalhos.TrabalhoDLO;
 import golden.services.model.usuarios.Usuario;
 import golden.services.model.usuarios.UsuarioDLO;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,9 @@ public class AvaliacaoDLO {
 	
 	@Autowired
 	private TrabalhoDLO trabalhoDLO;
+	
+	@Autowired
+	private AnuncioDLO anuncioDLO;
 	
 	@Autowired
 	private UsuarioDLO usuarioDLO;
@@ -58,4 +64,21 @@ public class AvaliacaoDLO {
 		return a;
 	}
 	
+	public AvaliacaoAgregada agregarAvaliacao(String idAnuncio) {
+		AvaliacaoAgregada ret = null;
+		Anuncio anuncio = anuncioDLO.getAnuncio(idAnuncio);
+		
+		if(anuncio != null) {
+			List<Avaliacao> avaliacoes = dao.findByAnuncio(anuncio);
+			ret = new AvaliacaoAgregada();
+			for(Avaliacao a : avaliacoes) {
+				int totalAvaliacoes = ret.getTotalAvaliacoes() + 1;
+				int totalNota = ret.getTotalPontos() + a.getNota();
+				ret.setTotalAvaliacoes(totalAvaliacoes);
+				ret.setTotalPontos(totalNota);
+			}
+		}
+		
+		return ret;
+	}
 }
